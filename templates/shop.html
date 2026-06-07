@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>فروشگاه من</title>
+
+<style>
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background: #eee;
+}
+
+.product {
+    background: white;
+    padding: 15px;
+    margin: 15px auto;
+    width: 250px;
+    border-radius: 10px;
+}
+
+button {
+    background: green;
+    color: white;
+    border: none;
+    padding: 8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🛒 فروشگاه من</h1>
+
+{% for product in products %}
+
+<div class="product">
+    <h3>{{ product.name }}</h3>
+    <p>قیمت: {{ product.price }}</p>
+    <button onclick="add()">خرید</button>
+</div>
+
+{% empty %}
+
+<p>هنوز محصولی اضافه نشده است.</p>
+
+{% endfor %}
+
+<h2 id="cart">سبد خرید: 0</h2>
+
+<script>
+let count = 0;
+
+function add() {
+    count++;
+    document.getElementById("cart").innerText =
+        "سبد خرید: " + count;
+}
+</script>
+
+</body>
+</html>
