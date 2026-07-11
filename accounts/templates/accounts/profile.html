@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>پروفایل {{ request.user.username }}</h2>
+<p>تعداد سفارش‌های شما: {{ order_count }}</p>
+<p>تعداد کالاهای داخل سبد خرید: {{ cart_count }}</p>
+
+<img src="{{ profile.image.url }}?v=1"
+style="width:150px;height:150px;border-radius:50%;object-fit:cover;">
+
+<hr>
+
+<p><strong>نام کاربری:</strong> {{ request.user.username }}</p>
+<p><strong>ایمیل:</strong> {{ request.user.email }}</p>
+<p><strong>نام کامل:</strong> {{ request.user.get_full_name }}</p>
+
+<p><strong>درباره من:</strong> {{ profile.bio }}</p>
+
+<hr>
+
+<h3>ویرایش پروفایل</h3>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <p>
+        {{ form.image.label_tag }}<br>
+        {{ form.image }}
+    </p>
+
+    <p>
+        {{ form.bio.label_tag }}<br>
+        {{ form.bio }}
+    </p>
+
+    <button type="submit"
+    style="padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:#0d6efd;
+    color:white;
+    font-size:16px;">
+        ذخیره تغییرات
+    </button>
+
+</form>
+
+<hr>
+
+<h3>📦 سفارش‌های من</h3>
+
+<p>تعداد سفارش‌ها: {{ orders.count }}</p>
+
+{% for order in orders %}
+
+<div style="border:1px solid #ddd;padding:10px;margin:10px 0;border-radius:8px;">
+
+شماره سفارش: {{ order.id }}
+
+<br>
+
+تاریخ: {{ order.created_at }}
+
+<br>
+
+وضعیت:
+{{ order.get_status_display }}
+
+</div>
+
+{% empty %}
+
+<p>هنوز سفارشی ثبت نشده است.</p>
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>فروشگاه</title>
+</head>
+<body>
+    <h1>محصولات فروشگاه</h1>
+
+    {% for product in products %}
+        <div>
+            <h3>{{ product.name }}</h3>
+            <p>قیمت: {{ product.price }} تومان</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>محصولی وجود ندارد.</p>
+    {% endfor %}
+
+</body>
+</html>

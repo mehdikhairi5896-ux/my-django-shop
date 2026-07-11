@@ -1,63 +1,133 @@
+{% load humanize %}
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<title>فروشگاه من</title>
+    <meta charset="UTF-8">
+    <title>فروشگاه من</title>
 
-<style>
-body {
-    font-family: sans-serif;
-    text-align: center;
-    background: #eee;
-}
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background: #eee;
+            margin: 0;
+            padding: 20px;
+        }
 
-.product {
-    background: white;
-    padding: 15px;
-    margin: 15px auto;
-    width: 250px;
-    border-radius: 10px;
-}
+        .search-box {
+            margin: 20px;
+        }
 
-button {
-    background: green;
-    color: white;
-    border: none;
-    padding: 8px;
-}
-</style>
+        .search-box input {
+            padding: 10px;
+            width: 220px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
 
+        .search-box button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .product {
+            background: white;
+            padding: 20px;
+            margin: 25px auto;
+            width: 300px;
+            border-radius: 18px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: 0.3s;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+        }
+
+        img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 15px;
+        }
+
+        p {
+            color: #e63946;
+            font-size: 18px;
+            font-weight: bold;
+        }
+      
+        .buy-btn {
+            display: inline-block;
+            background: #0d6efd;
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(13,110,253,0.35);
+            transition: all 0.3s ease;
+                 }
+
+        .buy-btn:hover {
+            background: #0b5ed7;
+            transform: translateY(-3px);
+                       }
+
+    </style>
 </head>
 
 <body>
 
-<h1>🛒 فروشگاه من</h1>
+    <h1>🛒 فروشگاه من </h1>
 
-{% for product in products %}
+    <form method="GET" class="search-box">
+        <input
+            type="text"
+            name="search"
+            value="{{ search|default:'' }}"
+            placeholder="نام محصول را جستجو کنید...">
 
-<div class="product">
-    <h3>{{ product.name }}</h3>
-    <p>قیمت: {{ product.price }}</p>
-    <button onclick="add()">خرید</button>
-</div>
+        <button type="submit">🔍 جستجو</button>
+    </form>
 
-{% empty %}
+    {% for product in products %}
 
-<p>هنوز محصولی اضافه نشده است.</p>
+    <div class="product">
 
-{% endfor %}
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% endif %}
 
-<h2 id="cart">سبد خرید: 0</h2>
+        <h3>{{ product.name }}</h3>
 
-<script>
-let count = 0;
+        <p>قیمت: {{ product.price|intcomma }} تومان</p>
 
-function add() {
-    count++;
-    document.getElementById("cart").innerText =
-        "سبد خرید: " + count;
-}
-</script>
+        <a class="buy-btn" href="/cart/add/{{ product.id }}/">
+            🛒 افزودن به سبد خرید
+        </a>
+
+    </div>
+
+    {% empty %}
+
+    <p>هیچ محصولی پیدا نشد.</p>
+
+    {% endfor %}
 
 </body>
+
 </html>

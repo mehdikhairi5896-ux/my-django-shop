@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: my-django-shop
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn mysite.wsgi:application"

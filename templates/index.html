@@ -1,117 +1,48 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سایت مهدی</title>
+{% extends 'base.html' %}
 
-<style>
-body{
-    margin:0;
-    background:#f4f4f4;
-    font-family:tahoma;
-    text-align:center;
-}
+{% block title %}سایت شخصی مهدی{% endblock %}
 
-.container{
-    max-width:600px;
-    margin:0 auto;
-    padding:20px;
-    text-align:center;
-}
+{% block content %}
 
-h1, h2, h3, p{
-    width:100%;
-    line-height:1.8;
-    margin:15px 0;
-}
-.profile-pic{
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    object-fit:cover;
-    margin-top:20px;
-}
+<div style="text-align:center;">
 
-h1{
-    font-size:40px;
-}
+{% if user.is_authenticated %}
+<img src="{{ user.profile.image.url }}" class="profile-img" alt="پروفایل">
+{% else %}
+<img src="/media/profile_images/default.jpg" class="profile-img" alt="پروفایل">
+{% endif %}
 
-h2{
-    font-size:30px;
-}
+<h2>سلام، من مهدی خیری بیرق هستم</h2>
 
-p{
-    font-size:20px;
-}
-
-.skills li{۷
-    list-style:none;
-    background:white;
-    margin:10px auto;
-    width:250px;
-    padding:15px;
-    border-radius:10px;
-}
-.project-card{
-    background:white;
-    width:280px;
-    margin:15px auto;
-    padding:15px;
-    border-radius:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.2);
-}
-.whatsapp-btn{
-    position:fixed;
-    bottom:0px;
-    left:0px;
-    z-index:9999;
-    background:#25D366;
-    color:white;
-    padding:15px 20px;
-    border-radius:50px;
-    text-decoration:none;
-}
-
-</style>
-
-</head>
-
-<body>
-<div class="container">
-
-    <img src="{% static 'images/IMG_20260425_023725_220.jpg' %}"
-         class="profile-pic"
-         alt="Mehdi">
-
-    <h1>👋 سلام</h1>
-
-    <h2>مهدی خیری بیرق</h2>
-
-    <p>اولین سایت واقعی من با Django 🚀</p>
-
-    <div class="skills">
-        <h3>مهارتهای من <h3>درباره من</h3>
+<p>🚀 اولین سایت واقعی من با Django</p>
 
 <p>
-من مهدی خیری هستم و در حال یادگیری طراحی سایت با Django در ترموکس هستم.
-هدف من تبدیل شدن به یک طراح سایت حرفه‌ای و کسب درآمد از برنامه‌نویسی است.
-</p></h3>
+<a class="btn" href="/shop/">ورود به فروشگاه</a>
+</p>
 
-        <ul>
-            <li>🐍 Python</li>
-            <li>🌐 Django</li>
-            <li>🎨 HTML</li>
-            <li>✨ CSS</li>
-        </ul>
-    </div>
+<hr>
+
+<h3>مهارت‌های من</h3>
+
+<p>🐍 Python</p>
+
+<h3>خدمات من</h3>
+
+<p>✔ طراحی سایت با Django</p>
+<p>✔ ساخت فروشگاه اینترنتی</p>
+<p>✔ طراحی سایت شخصی</p>
+
+<h3>درباره من</h3>
+
+<p>
+من مهدی خیری بیرق هستم و طراحی سایت با Django را در ترموکس انجام می‌دهم.
+خوشحالم که از سایت من دیدن می‌کنید.
+</p>
+
+<p>
+<a class="btn" href="https://wa.me/989148412419" target="_blank">واتساپ</a>
+</p>
 
 </div>
 
-<a href="https://wa.me/989936125944" class="whatsapp-btn">
-    واتساپ
-</a>
-
-</body>
-</html>
+{% endblock %}
