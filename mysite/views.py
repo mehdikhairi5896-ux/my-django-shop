@@ -2,7 +2,7 @@ from django.shortcuts import render
 from shop.models import Product
 
 def home(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'test_message': 'صفحه خانه درست است'})
 
 def shop(request):
     search = request.GET.get('search')
