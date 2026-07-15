@@ -9,7 +9,8 @@
 {% if user.is_authenticated %}
 <img src="{{ user.profile.image.url }}" class="profile-img" alt="پروفایل">
 {% else %}
-<img src="/media/profile_images/default.jpg" class="profile-img" alt="پروفایل">
+{% load static %}
+<img src="{% static 'images/python.jpg' %}" class="profile-img" alt="پروفایل">
 {% endif %}
 
 <h1>سلام، من مهدی خیری بیرق هستم</h1>
