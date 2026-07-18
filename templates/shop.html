@@ -108,11 +108,17 @@
 
     <div class="product">
 
-        {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        {% endif %}
+        <a href="/shop/{{ product.id }}/">
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% endif %}
+</a>
 
-        <h3>{{ product.name }}</h3>
+<h3>
+    <a href="/shop/{{ product.id }}/" style="text-decoration:none; color:#333;">
+        {{ product.name }}
+    </a>
+</h3>
 
         <p>قیمت: {{ product.price|intcomma }} تومان</p>
 

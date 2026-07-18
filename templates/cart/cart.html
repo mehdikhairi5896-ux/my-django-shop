@@ -24,6 +24,21 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
+        .product-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .product-row img {
+            width: 100px;
+            border-radius: 10px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
         .btn {
             text-decoration: none;
             padding: 5px 10px;
@@ -74,53 +89,54 @@
 
     {% for item in items %}
 
-        <div class="cart-item">
+    <div class="cart-item">
 
-            <h3>{{ item.product.name }}</h3>
+        <div class="product-row">
 
-            <p>قیمت: {{ item.product.price|intcomma }} تومان</p>
+            {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            {% endif %}
 
-            <p>
-                تعداد:
+            <div class="product-info">
+                <h3>{{ item.product.name }}</h3>
 
+                <p>قیمت: {{ item.product.price|intcomma }} تومان</p>
 
-    <a class="btn plus"
-       href="{% url 'increase_quantity' item.id %}">
-       ➕
-    </a>
+                <p>
+                    تعداد:
 
-    <strong>{{ item.quantity }}</strong>
+                    <a class="btn plus" href="{% url 'increase_quantity' item.id %}">➕</a>
 
-    <a class="btn minus"
-       href="{% url 'decrease_quantity' item.id %}">
-       ➖
-    </a>
-            </p>
+                    <strong>{{ item.quantity }}</strong>
 
-            <p>
-                جمع: {{ item.total_price|intcomma }} تومان
-            </p>
+                    <a class="btn minus" href="{% url 'decrease_quantity' item.id %}">➖</a>
+                </p>
 
-            <a class="btn delete"
-               href="{% url 'remove_from_cart' item.id %}">
-                حذف محصول
-            </a>
+                <p>
+                    جمع: {{ item.total_price|intcomma }} تومان
+                </p>
+
+                <a class="btn delete" href="{% url 'remove_from_cart' item.id %}">
+                    حذف محصول
+                </a>
+            </div>
 
         </div>
+
+    </div>
 
     {% endfor %}
 
     <div class="total">
         مجموع کل: {{ total|intcomma }} تومان
     </div>
-<div style="text-align:center; margin-top:20px;">
-    <a href="{% url 'place_order' %}"
-   style="background:green; color:white;
-          text-decoration:none;
-          font-weight:bold;">
-    ✅ ثبت سفارش
-</a>
-     </div>
+
+    <div style="text-align:center; margin-top:20px;">
+        <a class="btn" href="{% url 'place_order' %}" style="background:green; padding:10px 20px;">
+            ✅ ثبت سفارش
+        </a>
+    </div>
+
 {% else %}
 
     <p style="text-align:center;">
