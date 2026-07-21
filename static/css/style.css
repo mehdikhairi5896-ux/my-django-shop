@@ -149,3 +149,45 @@ p, li, a, button {
     font-size: 20px;
     padding: 12px 24px;
 }
+
+/* صفحه معرفی */
+.hero p,
+.hero li {
+    font-size: 22px;
+    line-height: 1.8;
+}
+
+/* فقط صفحه معرفی */
+.hero h2 {
+    font-size: 42px;
+}
+
+.hero h3 {
+    font-size: 32px;
+}
+
+.hero p,
+.hero li {
+    font-size: 24px;
+    line-height: 1.8;
+}
+
+.hero .btn,
+.hero a {
+    font-size: 22px;
+}
+
+.hero h3 {
+    font-size: 36px !important;
+}
+
+.hero p,
+.hero li {
+    font-size: 24px !important;
+}
+
+.intro-text{
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1.8;
+}

@@ -1,3 +1,4 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -51,11 +52,24 @@
     </a>
 </p>           
 
-            <p>تاریخ: {{ order.created_at }}</p>
+            <p>📅 تاریخ: {{ order.created_at|date:"Y/m/d H:i" }}</p>
 
-            <p>وضعیت: {{ order.status }}</p>
+            <p>
+وضعیت:
+{% if order.status == "pending" %}
+<span style="color:orange;font-weight:bold;">🟠 در انتظار</span>
+{% elif order.status == "processing" %}
+<span style="color:blue;font-weight:bold;">🔵 در حال پردازش</span>
+{% elif order.status == "shipped" %}
+<span style="color:purple;font-weight:bold;">🟣 ارسال شده</span>
+{% elif order.status == "delivered" %}
+<span style="color:green;font-weight:bold;">🟢 تحویل شده</span>
+{% else %}
+{{ order.status }}
+{% endif %}
+</p>
             
-            <p>مبلغ کل: {{ order.total_price }} تومان</p>
+            <p>💰 مبلغ کل: {{ order.total_price|intcomma }} تومان</p>
 
         </div>
 
