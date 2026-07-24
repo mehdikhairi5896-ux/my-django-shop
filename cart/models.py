@@ -35,12 +35,15 @@ class Order(models.Model):
 
     phone = models.CharField(max_length=20, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
-    
+
     def total_price(self):
         total = 0
         for item in self.orderitem_set.all():
             total += item.product.price * item.quantity
         return total
+
+    def total_items(self):
+        return sum(item.quantity for item in self.orderitem_set.all()) 
 
     def __str__(self):
         return f"سفارش {self.id}"
