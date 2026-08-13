@@ -4,3 +4,6 @@ services:
     env: python
     buildCommand: "./build.sh"
     startCommand: "gunicorn mysite.wsgi:application"
+    envVars:
+      - key: DJANGO_PRODUCTION
+        value: "True"

@@ -6,11 +6,21 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
 
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'status', 'total_price_display', 'created_at')
+    list_display = (
+        'id',
+        'user',
+        'phone',
+        'status',
+        'total_price_display',
+        'created_at',
+    )
     list_filter = ('status', 'created_at')
-    search_fields = ('user__username',)
+    search_fields = ('user__username', 'phone', 'address')
+    list_editable = ('status',)
+    ordering = ('-created_at',)
     inlines = [OrderItemInline]
 
     def total_price_display(self, obj):
@@ -18,8 +28,10 @@ class OrderAdmin(admin.ModelAdmin):
 
     total_price_display.short_description = "مبلغ کل"
 
-    inlines = [OrderItemInline]
+
+@admin.register(CartItem)
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'quantity')
 
 
-admin.site.register(CartItem)
 admin.site.register(OrderItem)

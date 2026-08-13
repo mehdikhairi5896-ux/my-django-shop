@@ -8,6 +8,13 @@
 
 <div class="hero">
 
+<div style="text-align:center; margin:20px 0;">
+    <h2 style="color:#0d6efd;">همیشه به خدا توکل کنید</h2>
+    <h3 style="color:#198754;">Always Trust in God</h3>
+</div>
+
+<div style="text-align:center;">
+
 <div style="text-align:center;">
     {% load static %}
     <img src="{% static 'images/logo.png' %}?v=13" class="profile-img" alt="Mehdi Khairi Bairagh">
@@ -28,7 +35,78 @@
 <a class="btn" href="/shop/">ورود به فروشگاه</a>
 </p>
 
+<p>
+<a class="btn" href="{% url 'ad_create' %}">
+📢 ثبت آگهی
+</a>
+</p>
+
+<p>
+<a class="btn" href="{% url 'ad_list' %}">
+📋 مشاهده همه آگهی‌ها
+</a>
+</p>
+
 <hr>
+
+<hr>
+
+<div style="
+text-align:center;
+margin:30px auto;
+padding:20px;
+max-width:400px;
+border:2px dashed #0d6efd;
+border-radius:15px;
+background:#f8f9fa;
+">
+
+<h3>📢 جایگاه تبلیغات</h3>
+
+<p>
+برای تبلیغ کسب‌وکار خود با ما تماس بگیرید
+</p>
+
+<a href="https://wa.me/989148412419"
+target="_blank"
+style="
+display:inline-block;
+background:#25D366;
+color:white;
+padding:10px 25px;
+border-radius:25px;
+text-decoration:none;
+">
+تماس برای تبلیغ
+</a>
+
+</div>
+
+<hr>
+
+{% if ad %}
+<hr>
+
+<div style="text-align:center; margin:30px 0;">
+    <h3>{{ ad.title }}</h3>
+
+    <p>{{ ad.description }}</p>
+
+    {% if ad.image %}
+        <a href="{{ ad.link }}" target="_blank">
+    <img src="{{ ad.image.url }}" style="max-width:300px; border-radius:10px;">
+</a>
+    {% endif %}
+
+    {% if ad.link %}
+        <p>
+            <a href="{{ ad.link }}" target="_blank">مشاهده تبلیغ</a>
+        </p>
+    {% endif %}
+</div>
+
+<hr>
+{% endif %}
 
 <h3>مهارت‌های من</h3>
 
@@ -44,7 +122,6 @@
 
 <p>
 من مهدی خیری بیرق هستم و طراحی سایت با Django را در ترموکس انجام می‌دهم.
-خوشحالم که از سایت من دیدن می‌کنید.
 </p>
 
 <p>
@@ -75,5 +152,60 @@ margin-right:auto;
 </div>
 
 </div>
+
+    <!-- بخش‌های قبلی صفحه -->
+
+    {% load humanize %}
+
+<section class="donation-box">
+    <h2>❤️ صندوق همدلی</h2>
+
+    <p>با کمک شما می‌توانیم به افراد نیازمند کمک کنیم.</p>
+
+    <h3>
+    موجودی صندوق:
+   
+    <span id="donation-total">
+    {{ donation_total|intcomma }}
+</span>
+
+<div class="donation-list">
+{% for donation in donations %}
+    <div class="donation-item">
+        <span>
+            🤲 {{ donation.donor_name|default:"ناشناس" }}
+        </span>
+
+        <span class="amount">
+            {{ donation.amount|intcomma }} تومان
+        </span>
+    </div>
+{% endfor %}
+</div>
+
+    تومان
+</h3>
+
+    <a href="{% url 'donation_home' %}" class="donate-btn">
+        🤲 کمک به صندوق
+    </a>
+</section>
+
+<script>
+async function updateDonationTotal() {
+    try {
+        const response = await fetch("{% url 'donation_total_api' %}");
+        const data = await response.json();
+
+        document.getElementById("donation-total").innerText =
+            data.total.toLocaleString("fa-IR");
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+setInterval(updateDonationTotal, 5000);
+updateDonationTotal();
+</script>
 
 {% endblock %}

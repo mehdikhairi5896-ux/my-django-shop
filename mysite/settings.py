@@ -20,13 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&%_b2q8u1o4%+&*1i%pj##5rkb=11kqj%mn10gzclhmo4^epbu'
 
-SECRET_KEY = 'django-insecure-123456'
+SECRET_KEY = '1)=4c!-z2%w+^^__3*xgnky7i9j=r_#*x#pl0*sgz=5k9aa2ot'
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['my-django-shop-2.onrender.com', '127.0.0.1', 'localhost']
 
 # Application definition
 'blog',
@@ -38,11 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'shop',
     'cart',
     'accounts',
-    'django.contrib.humanize',
     'orders',
+    'ads',
+    'donation',
+    'market',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+ZARINPAL_MERCHANT_ID = "SANDBOX"
+ZARINPAL_SANDBOX = True
+
+SECURE_SSL_REDIRECT = os.environ.get("DJANGO_PRODUCTION", "False") == "True"
+SECURE_HSTS_SECONDS = 31536000
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

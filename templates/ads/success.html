@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}پرداخت موفق{% endblock %}
+
+{% block content %}
+
+<div style="
+    max-width:600px;
+    margin:50px auto;
+    padding:30px;
+    background:#ffffff;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.15);
+    text-align:center;
+">
+
+    <h1 style="color:#198754;">
+        ✅ پرداخت آزمایشی موفق بود
+    </h1>
+
+    <p style="font-size:20px;">
+        پرداخت آگهی با موفقیت ثبت شد.
+    </p>
+
+    {% if ad %}
+        <h2>{{ ad.title }}</h2>
+
+        <p>
+            مبلغ:
+            <strong>{{ ad.price|intcomma }}</strong>
+            تومان
+        </p>
+    {% endif %}
+
+    {% if payment %}
+        <hr>
+
+        <p>
+            📅 تاریخ ثبت پرداخت:
+            <strong>
+                {{ payment.created_at|date:"Y/m/d" }}
+            </strong>
+        </p>
+
+        <p>
+            🕐 ساعت پرداخت:
+            <strong>
+                {{ payment.paid_at|date:"H:i:s" }}
+            </strong>
+        </p>
+
+        <p>
+            💳 شماره تراکنش:
+            <strong>
+                {{ payment.id }}
+            </strong>
+        </p>
+    {% endif %}
+
+    <p style="color:#198754; font-size:18px;">
+        وضعیت پرداخت: ✅ پرداخت شده
+    </p>
+
+    <br>
+
+    <a href="{% url 'ad_list' %}"
+       style="
+       display:inline-block;
+       padding:12px 25px;
+       background:#0d6efd;
+       color:white;
+       text-decoration:none;
+       border-radius:8px;
+       ">
+        📢 بازگشت به لیست تبلیغات
+    </a>
+
+</div>
+
+{% endblock %}

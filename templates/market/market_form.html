@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ثبت کالای جدید</title>
+</head>
+
+<body>
+
+<h1>ثبت کالای جدید</h1>
+
+<form method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        ثبت کالا
+    </button>
+
+</form>
+
+<a href="{% url 'market_list' %}">
+    بازگشت به بازار
+</a>
+
+</body>
+</html>

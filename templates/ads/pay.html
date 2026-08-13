@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<h2>پرداخت تبلیغ</h2>
+
+<p><strong>عنوان:</strong> {{ ad.title }}</p>
+<p><strong>هزینه:</strong> {{ ad.get_price|intcomma }} تومان</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">پرداخت</button>
+</form>
+{% endblock %}

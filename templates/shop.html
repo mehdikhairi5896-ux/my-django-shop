@@ -167,7 +167,7 @@ font-size:18px;">
 </a>
 
 <h3>
-    <a href="/shop/{{ product.id }}/" style="text-decoration:none; color:#333;">
+    <a href="{% url 'product_detail' product.id %}" style="text-decoration:none; color:#333;">
         {{ product.name }}
     </a>
 </h3>

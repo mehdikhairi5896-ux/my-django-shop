@@ -1,0 +1,43 @@
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ item.title }}</title>
+</head>
+
+<body>
+
+<h1>{{ item.title }}</h1>
+
+{% if item.image %}
+    <img src="{{ item.image.url }}" width="300">
+{% endif %}
+
+<p>{{ item.description }}</p>
+
+<p>
+    💰 قیمت:
+    {{ item.price|floatformat:0|intcomma }} تومان
+</p>
+
+<p>
+    📍 شهر: {{ item.city }}
+</p>
+
+<p>
+    👤 فروشنده: {{ item.owner.username }}
+</p>
+
+<a href="{% url 'market_buy' item.id %}">
+    🛒 خرید این کالا
+</a>
+
+<a href="{% url 'market_list' %}">
+    ⬅ بازگشت به بازار
+</a>
+
+</body>
+</html>

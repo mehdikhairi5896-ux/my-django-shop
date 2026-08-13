@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>صندوق همدلی</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            direction: rtl;
+        }
+
+        .box {
+            background: #f2f2f2;
+            padding: 30px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        h1 {
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>❤️ صندوق همدلی</h1>
+
+    <h2>
+        موجودی صندوق:
+        {{ total|intcomma }}
+        تومان
+    </h2>
+
+    <p>
+        با کمک شما می‌توانیم به افراد نیازمند کمک کنیم.
+    </p>
+
+    <h3>🤲 ثبت کمک</h3>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        کمک می‌کنم
+    </button>
+
+</form>
+
+</div>
+
+</body>
+</html>

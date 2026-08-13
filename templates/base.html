@@ -4,42 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}فروشگاه من{% endblock %}</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3">
 </head>
+
 <body>
 
-<div class="container">
-    <h1>🛍 فروشگاه من</h1>
+<nav class="navbar">
+    <a href="/">🏠 صفحه اصلی</a>
+    <a href="/shop/">🛒 فروشگاه</a>
+    <a href="/cart/">🛍 سبد خرید</a>
+    <a href="{% url 'profile' %}">👤 پروفایل</a>
+</nav>
 
-    <nav>
-        <a href="/">🏠 خانه</a>
-        <a href="/shop/">🛒 فروشگاه</a>
-        <a href="/cart/">📦 سبد خرید</a>
+{% block content %}
+{% endblock %}
 
-        {% if user.is_authenticated %}
-            <a href="/accounts/profile/">👤 پروفایل</a>
-
-            <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">🚪 خروج</button>
-            </form>
-        {% else %}
-            <a href="{% url 'login' %}">🔑 ورود</a>
-        {% endif %}
-    </nav>
-
-    <hr>
-
-    {% block content %}
-    {% endblock %}
-
-    <hr>
-
-    <footer>
-        <p>© 2026 فروشگاه من</p>
-    </footer>
-</div>
+<hr>
 
 </body>
 </html>

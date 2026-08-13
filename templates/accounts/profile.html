@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+{% load humanize %}
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروفایل من</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 30px 15px;
+            color: #222;
+        }
+
+        .profile-box {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .username {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* کارت‌های سبد خرید و سفارش‌ها */
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            flex: 1;
+            background: #f1f8ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 25px;
+        }
+
+        .stat-title {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        /* تصویر پروفایل */
+        .profile-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-image img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #ddd;
+        }
+
+        /* عنوان سفارش‌ها */
+        .orders-section {
+            margin-top: 30px;
+        }
+
+        .orders-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* کارت هر سفارش */
+        .order-card {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-card p {
+            margin: 10px 0;
+        }
+
+        .order-number {
+            font-size: 17px;
+        }
+
+        /* وضعیت سفارش */
+        .status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-shipped {
+            background: #d1ecf1;
+            color: #055160;
+        }
+
+        .status-delivered {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        /* وقتی سفارشی وجود ندارد */
+        .no-orders {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+            margin-bottom: 25px;
+        }
+
+        /* فرم پروفایل */
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* دکمه ذخیره */
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #0b5ed7;
+        }
+
+        /* مناسب موبایل */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            .profile-box {
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+
+            .stats {
+                gap: 8px;
+            }
+
+            .stat-box {
+                padding: 12px 8px;
+            }
+
+            .order-card {
+                padding: 13px;
+            }
+
+            .status {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="profile-box">
+
+        <h1>پروفایل من</h1>
+
+        <div class="username">
+            نام کاربری: {{ user.username }}
+        </div>
+
+        <!-- آمار کاربر -->
+        <div class="stats">
+
+            <div class="stat-box">
+                <div class="stat-icon">🛒</div>
+                <div class="stat-title">سبد خرید</div>
+                <div>{{ cart_count }} کالا</div>
+            </div>
+
+            <div class="stat-box">
+                <div class="stat-icon">📦</div>
+                <div class="stat-title">سفارش‌ها</div>
+                <div>{{ orders_count }} سفارش</div>
+            </div>
+
+        </div>
+
+        <!-- تصویر پروفایل -->
+        {% if profile.image %}
+            <div class="profile-image">
+                <img src="{{ profile.image.url }}" alt="تصویر پروفایل">
+            </div>
+        {% endif %}
+
+        <!-- سفارش‌ها -->
+        {% if orders %}
+
+            <div class="orders-section">
+
+                <h2 class="orders-title">
+                    📦 سفارش‌های من
+                </h2>
+
+                {% for order in orders %}
+
+                    <div class="order-card">
+
+                        <strong class="order-number">
+                            سفارش شماره {{ order.id }}
+                        </strong>
+
+                        <p>
+                            📅 تاریخ:
+                            {{ order.created_at|date:"Y/m/d - H:i" }}
+                        </p>
+
+                        <p>
+                            📌 وضعیت:
+
+                            {% if order.status == "pending" %}
+                                <span class="status status-pending">
+                                    🟡 {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "processing" %}
+                                <span class="status status-processing">
+                                    🔵 {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "shipped" %}
+                                <span class="status status-shipped">
+                                    🚚 {{ order.get_status_display }}
+                                </span>
+
+                            {% elif order.status == "delivered" %}
+                                <span class="status status-delivered">
+                                    🟢 {{ order.get_status_display }}
+                                </span>
+
+                            {% else %}
+                                <span class="status">
+                                    {{ order.get_status_display }}
+                                </span>
+                            {% endif %}
+
+                        </p>
+
+                        <p>
+                            🛍 تعداد کالا:
+                            {{ order.total_items }}
+                        </p>
+
+                        <p>
+                            💰 مبلغ:
+                            {{ order.total_price|floatformat:0|intcomma }} تومان
+                        </p>
+
+                        <a href="{% url 'cart_order_detail' order.id %}"
+   style="display:inline-block;
+   margin-top:10px;
+   padding:10px 18px;
+   background:#0d6efd;
+   color:white;
+   text-decoration:none;
+   border-radius:8px;">
+    مشاهده جزئیات سفارش
+</a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="no-orders">
+                📦 هنوز سفارشی ثبت نکرده‌اید.
+            </div>
+
+        {% endif %}
+
+        <!-- فرم ویرایش پروفایل -->
+        <form method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="field">
+                <label for="id_image">
+                    تصویر پروفایل
+                </label>
+
+                {{ form.image }}
+            </div>
+
+            <div class="field">
+                <label for="id_bio">
+                    درباره من
+                </label>
+
+                {{ form.bio }}
+            </div>
+
+            <button type="submit">
+                ذخیره پروفایل
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

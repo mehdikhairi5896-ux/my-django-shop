@@ -5,12 +5,16 @@
     <meta charset="UTF-8">
     <title>{{ product.name }}</title>
 </head>
-
 <body style="font-family:tahoma; text-align:center;">
 
     <h1>{{ product.name }}</h1>
 
-    <h2>قیمت: {{ product.price|intcomma }}</h2>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="300">
+        <br><br>
+    {% endif %}
+
+    <h2>قیمت: {{ product.price|intcomma }} تومان</h2>
 
     <br>
 

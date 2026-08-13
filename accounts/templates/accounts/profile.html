@@ -3,11 +3,12 @@
 {% block content %}
 
 <h2>پروفایل {{ request.user.username }}</h2>
+
 <p>تعداد سفارش‌های شما: {{ order_count }}</p>
 <p>تعداد کالاهای داخل سبد خرید: {{ cart_count }}</p>
 
 <img src="{{ profile.image.url }}?v=1"
-style="width:150px;height:150px;border-radius:50%;object-fit:cover;">
+     style="width:150px;height:150px;border-radius:50%;object-fit:cover;">
 
 <hr>
 
@@ -35,12 +36,12 @@ style="width:150px;height:150px;border-radius:50%;object-fit:cover;">
     </p>
 
     <button type="submit"
-    style="padding:10px 20px;
-    border:none;
-    border-radius:8px;
-    background:#0d6efd;
-    color:white;
-    font-size:16px;">
+            style="padding:10px 20px;
+            border:none;
+            border-radius:8px;
+            background:#0d6efd;
+            color:white;
+            font-size:16px;">
         ذخیره تغییرات
     </button>
 
@@ -54,18 +55,27 @@ style="width:150px;height:150px;border-radius:50%;object-fit:cover;">
 
 {% for order in orders %}
 
-<div style="border:1px solid #ddd;padding:10px;margin:10px 0;border-radius:8px;">
+<div style="border:1px solid #ddd;
+            padding:10px;
+            margin:10px 0;
+            border-radius:8px;">
 
-شماره سفارش: {{ order.id }}
+    شماره سفارش: {{ order.id }}
 
-<br>
+    <br>
 
-تاریخ: {{ order.created_at }}
+    تاریخ: {{ order.created_at }}
 
-<br>
+    <br>
 
-وضعیت:
-{{ order.get_status_display }}
+    وضعیت:
+    {{ order.get_status_display }}
+
+    <br>
+
+    <p style="color:red; font-size:20px;">
+    تست مشاهده جزئیات
+</p>
 
 </div>
 

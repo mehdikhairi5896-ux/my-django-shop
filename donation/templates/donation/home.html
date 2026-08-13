@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="donation-box">
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>نام کمک‌کننده</label>
+            {{ form.donor_name }}
+        </div>
+
+        <div class="form-group">
+            <label>مبلغ کمک</label>
+            {{ form.amount }}
+        </div>
+
+        <div class="form-group">
+            <label>توضیحات</label>
+            {{ form.description }}
+        </div>
+
+        <button type="submit" class="donate-btn">
+            🤲 ثبت کمک
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

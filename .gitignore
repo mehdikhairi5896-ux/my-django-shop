@@ -5,3 +5,18 @@ venv/
 db.sqlite3
 *.zip
 backup*
+# Django
+media/
+staticfiles/
+
+# Python
+*.pyo
+*.pyd
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+battery.py

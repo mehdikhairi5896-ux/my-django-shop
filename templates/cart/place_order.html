@@ -1,28 +1,165 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ثبت سفارش</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            background: #f5f7fb;
+            font-family: Tahoma, Arial, sans-serif;
+            color: #222;
+        }
+
+        .order-card {
+            width: 100%;
+            max-width: 650px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d5dbe5;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            direction: rtl;
+        }
+
+        input {
+            height: 52px;
+        }
+
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            background: #0d6efd;
+            color: white;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #0b5ed7;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #6f42c1;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            .order-card {
+                margin: 10px auto;
+                padding: 22px 18px;
+                border-radius: 14px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            input,
+            textarea {
+                font-size: 15px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>ثبت سفارش</h1>
+    <div class="order-card">
 
-<form method="post">
-    {% csrf_token %}
+        <h1>ثبت سفارش 🛒</h1>
 
-    {{ form.as_p }}
+        <form method="post">
+            {% csrf_token %}
 
-    <button type="submit">
-        ثبت نهایی سفارش
-    </button>
-</form>
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
 
-<p>
-    <a href="{% url 'cart_detail' %}">
-        بازگشت به سبد خرید
-    </a>
-</p>
+                    {% if field.errors %}
+                        <div style="color:red; margin-top:5px;">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="submit-btn">
+                ثبت نهایی سفارش 🛒
+            </button>
+        </form>
+
+        <a class="back-link" href="{% url 'cart_detail' %}">
+            بازگشت به سبد خرید ←
+        </a>
+
+    </div>
 
 </body>
 </html>
+

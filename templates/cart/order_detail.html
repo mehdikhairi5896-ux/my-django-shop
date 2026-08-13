@@ -5,65 +5,267 @@
 
 {% block content %}
 
-<div class="card shadow-sm">
-    <div class="card-body">
+<style>
+    .order-detail-card {
+        max-width: 800px;
+        margin: 30px auto;
+        border-radius: 18px;
+        overflow: hidden;
+    }
 
-        <h2 class="mb-3">جزئیات سفارش شماره {{ order.id }}</h2>
+    .order-header {
+        padding: 25px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+    }
 
-        <p><strong>تاریخ ثبت:</strong> {{ order.created_at|date:"Y/m/d H:i" }}</p>
-        <p><strong>وضعیت سفارش:</strong> {{ order.get_status_display }}</p>
-        <p><strong>شماره تماس:</strong> {{ order.phone }}</p>
-        <p><strong>آدرس:</strong> {{ order.address }}</p>
+    .order-header h2 {
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
 
-        <hr>
+    .order-info p {
+        margin: 10px 0;
+    }
 
-        {% for item in items %}
-        <div class="row align-items-center mb-4">
+    .order-status {
+        display: inline-block;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
 
-            <div class="col-md-3 text-center">
-                {% if item.product.image %}
-                <img src="{{ item.product.image.url }}"
-                     class="img-fluid rounded"
-                     style="max-width:180px;"
-                     alt="{{ item.product.name }}">
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-processing {
+        background: #cfe2ff;
+        color: #084298;
+    }
+
+    .status-shipped {
+        background: #d1ecf1;
+        color: #055160;
+    }
+
+    .status-delivered {
+        background: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .product-box {
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .product-name {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .total-box {
+        margin-top: 25px;
+        padding: 18px;
+        background: #f1f8ff;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    .total-box h3 {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .back-button {
+        margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+
+        .order-detail-card {
+            margin: 15px 5px;
+        }
+
+        .order-header {
+            padding: 18px;
+        }
+
+        .product-image {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 15px;
+        }
+
+        .product-box {
+            text-align: center;
+        }
+
+        .product-info {
+            margin-top: 10px;
+        }
+    }
+</style>
+
+<div class="card shadow-sm order-detail-card">
+
+    <!-- اطلاعات سفارش -->
+    <div class="order-header">
+
+        <h2>
+            🧾 جزئیات سفارش شماره {{ order.id }}
+        </h2>
+
+        <div class="order-info">
+
+            <p>
+                📅 <strong>تاریخ ثبت:</strong>
+                {{ order.created_at|date:"Y/m/d H:i" }}
+            </p>
+
+            <p>
+                📌 <strong>وضعیت سفارش:</strong>
+
+                {% if order.status == "pending" %}
+
+                    <span class="order-status status-pending">
+                        🟡 {{ order.get_status_display }}
+                    </span>
+
+                {% elif order.status == "processing" %}
+
+                    <span class="order-status status-processing">
+                        🔵 {{ order.get_status_display }}
+                    </span>
+
+                {% elif order.status == "shipped" %}
+
+                    <span class="order-status status-shipped">
+                        🚚 {{ order.get_status_display }}
+                    </span>
+
+                {% elif order.status == "delivered" %}
+
+                    <span class="order-status status-delivered">
+                        🟢 {{ order.get_status_display }}
+                    </span>
+
+                {% else %}
+
+                    <span class="order-status">
+                        {{ order.get_status_display }}
+                    </span>
+
                 {% endif %}
-            </div>
 
-            <div class="col-md-9">
-                <h4>{{ item.product.name }}</h4>
+            </p>
 
-                <p>تعداد: {{ item.quantity }}</p>
+            <p>
+                📱 <strong>شماره تماس:</strong>
+                {{ order.phone }}
+            </p>
 
-                <p>قیمت:
-                    {{ item.product.price|intcomma }} تومان
-                </p>
-
-                <p>
-                    <strong>
-                        جمع:
-                        {{ item.total_price|intcomma }} تومان
-                    </strong>
-                </p>
-            </div>
+            <p>
+                🏠 <strong>آدرس:</strong>
+                {{ order.address }}
+            </p>
 
         </div>
 
-        <hr>
+    </div>
+
+    <!-- کالاهای سفارش -->
+    <div class="card-body">
+
+        <h4 class="mb-4">
+            🛍 کالاهای سفارش
+        </h4>
+
+        {% for item in items %}
+
+            <div class="row align-items-center product-box">
+
+                <!-- تصویر کالا -->
+                <div class="col-md-4 text-center">
+
+                    {% if item.product.image %}
+
+                        <img
+                            src="{{ item.product.image.url }}"
+                            class="product-image"
+                            alt="{{ item.product.name }}"
+                        >
+
+                    {% endif %}
+
+                </div>
+
+                <!-- اطلاعات کالا -->
+                <div class="col-md-8 product-info">
+
+                    <h4 class="product-name">
+                        {{ item.product.name }}
+                    </h4>
+
+                    <p>
+                        🛍 <strong>تعداد:</strong>
+                        {{ item.quantity }}
+                    </p>
+
+                    <p>
+                        💰 <strong>قیمت واحد:</strong>
+                        {{ item.product.price|intcomma }} تومان
+                    </p>
+
+                    <p>
+                        💵 <strong>جمع:</strong>
+                        {{ item.total_price|intcomma }} تومان
+                    </p>
+
+                </div>
+
+            </div>
 
         {% empty %}
-        <p>محصولی در این سفارش وجود ندارد.</p>
+
+            <div class="text-center py-4">
+                📦 محصولی در این سفارش وجود ندارد.
+            </div>
+
         {% endfor %}
 
-        <h3 class="text-success">
-            مجموع کل سفارش:
-            {{ total|intcomma }} تومان
-        </h3>
+        <!-- مبلغ کل -->
+        <div class="total-box">
 
-        <a href="{% url 'my_orders' %}" class="btn btn-primary mt-3">
-            ← بازگشت به سفارش‌های من
-        </a>
+            <h3>
+                💰 مجموع کل سفارش:
+                {{ total|intcomma }} تومان
+            </h3>
+
+        </div>
+
+        <!-- بازگشت -->
+        <div class="text-center">
+
+            <a
+                href="{% url 'my_orders' %}"
+                class="btn btn-primary back-button"
+            >
+                ← بازگشت به سفارش‌های من
+            </a>
+
+        </div>
 
     </div>
+
 </div>
 
 {% endblock %}

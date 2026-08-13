@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="text-align:center;">
+
+<h2 style="font-size:32px;">حذف آگهی</h2>
+
+<p style="font-size:22px;">
+آیا مطمئن هستید که می‌خواهید آگهی
+<strong>{{ ad.title }}</strong>
+را حذف کنید؟
+</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <button type="submit"
+    style="
+    font-size:22px;
+    padding:15px 35px;
+    border-radius:10px;
+    background:#dc3545;
+    color:white;
+    border:none;">
+    🗑 حذف
+    </button>
+
+</form>
+
+<br>
+
+<a href="{% url 'ad_detail' ad.id %}"
+style="
+font-size:22px;
+padding:15px 35px;
+border-radius:10px;
+background:#6c757d;
+color:white;
+text-decoration:none;
+display:inline-block;">
+انصراف
+</a>
+
+</div>
+
+{% endblock %}
