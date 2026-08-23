@@ -30,4 +30,31 @@
 
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const amountInput = document.getElementById("id_amount");
+
+    if (!amountInput) return;
+
+    function formatAmount(value) {
+        value = value.replace(/[^\d]/g, "");
+        if (!value) return "";
+        return Number(value).toLocaleString("en-US");
+    }
+
+    amountInput.addEventListener("input", function () {
+        this.value = formatAmount(this.value);
+    });
+
+    amountInput.value = formatAmount(amountInput.value);
+
+    amountInput.form.addEventListener("submit", function () {
+        amountInput.value = amountInput.value.replace(/,/g, "");
+    });
+
+});
+</script>
+
 {% endblock %}
+

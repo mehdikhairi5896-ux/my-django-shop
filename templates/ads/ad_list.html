@@ -1,73 +1,111 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<title>لیست تبلیغات</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لیست تبلیغات</title>
 
-<style>
-body{
-    font-family:tahoma;
-    background:linear-gradient(135deg,#e3f2fd,#fff3e0);
-    margin:0;
-    padding:20px;
-}
+    <style>
+        body {
+            font-family: Tahoma;
+            background: linear-gradient(135deg, #e3f2fd, #fff3e0);
+            margin: 0;
+            padding: 20px;
+        }
 
-h1{
-    text-align:center;
-}
+        h1 {
+            text-align: center;
+        }
 
-.ads{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:20px;
-}
+        .new-ad-btn {
+            display: block;
+            width: 220px;
+            margin: 20px auto 30px;
+            padding: 13px;
+            text-align: center;
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: bold;
+            box-shadow: 0 5px 12px rgba(0,0,0,.15);
+        }
 
-.card{
-    width:320px;
-max-width:100%;
-    background:linear-gradient(180deg,#ffffff,#eaf4ff);
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 8px 20px rgba(0,0,0,.18);
-    border:2px solid #0d6efd;
-}
+        .ads {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
 
-.card img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-}
+        .card {
+            width: 320px;
+            max-width: 100%;
+            background: linear-gradient(180deg, #ffffff, #eaf4ff);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,.18);
+            border: 2px solid #0d6efd;
+        }
 
-.card h3{
-    text-align:center;
-    color:#198754;
-    font-size:20px;
-}
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
 
-.card p{
-    padding:0 15px 15px;
-    color:#555;
-}
+        .card h3 {
+            text-align: center;
+            color: #198754;
+            font-size: 20px;
+        }
 
-.btn{
-    display:block;
-    width:80%;
-    margin:15px auto 20px;
-    text-align:center;
-    background:#0d6efd;
-    color:white;
-    text-decoration:none;
-    padding:12px;
-    border-radius:10px;
-}
-</style>
+        .description {
+            padding: 0 15px 10px;
+            color: #555;
+        }
 
+        .details {
+            margin: 10px 15px;
+            padding: 12px;
+            background: #f8fbff;
+            border-radius: 12px;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .details div {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .details div:last-child {
+            border-bottom: none;
+        }
+
+        .btn {
+            display: block;
+            width: 80%;
+            margin: 15px auto 20px;
+            text-align: center;
+            background: #0d6efd;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
-<h1> 📢 تبلیغات کاربران</h1>
+<h1>📢 تبلیغات کاربران</h1>
+
+<a href="{% url 'ad_create' %}" class="new-ad-btn">
+    📢 ثبت تبلیغ جدید
+</a>
 
 <div class="ads">
 
@@ -75,15 +113,61 @@ max-width:100%;
 
 <div class="card">
 
-{% if ad.image %}
-<img src="{{ ad.image.url }}">
-{% endif %}
+    {% if ad.image %}
+        <img src="{{ ad.image.url }}">
+    {% endif %}
 
-<h3>{{ ad.title }}</h3>
+    <h3>{{ ad.title }}</h3>
 
-<p>{{ ad.description }}</p>
+    <p class="description">
+        {{ ad.description }}
+    </p>
 
-<a href="{% url 'ad_detail' ad.id %}" class="btn">مشاهده تبلیغ</a>
+    <div class="details">
+
+        <div>
+            💰 <strong>قیمت:</strong>
+            {{ ad.price|intcomma }} تومان
+        </div>
+
+        <div>
+            📍 <strong>شهر:</strong>
+            {{ ad.city }}
+        </div>
+
+        <div>
+            ⏱ <strong>مدت تبلیغ:</strong>
+            {{ ad.get_duration_display }}
+        </div>
+
+        <div>
+            📅 <strong>تاریخ ثبت:</strong>
+            {{ ad.created_at|date:"Y/m/d" }}
+        </div>
+
+        <div>
+            💳 <strong>وضعیت پرداخت:</strong>
+            {% if ad.paid %}
+                پرداخت شده ✅
+            {% else %}
+                پرداخت نشده ❌
+            {% endif %}
+        </div>
+
+        <div>
+            📢 <strong>وضعیت آگهی:</strong>
+            {% if ad.approved %}
+                تأیید شده ✅
+            {% else %}
+                در انتظار تأیید ⏳
+            {% endif %}
+        </div>
+
+    </div>
+
+    <a href="{% url 'ad_detail' ad.id %}" class="btn">
+        مشاهده تبلیغ
+    </a>
 
 </div>
 

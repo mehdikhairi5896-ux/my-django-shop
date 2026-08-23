@@ -117,6 +117,11 @@
             {{ form.duration }}
         </div>
 
+        <div class="field">
+    <label for="{{ form.price.id_for_label }}">قیمت</label>
+    {{ form.price }}
+</div>
+
         <button type="submit" class="submit-btn">
     {% if form.instance.pk %}
         💾 ذخیره تغییرات
@@ -128,6 +133,45 @@
     </form>
 
 </div>
+
+<script>
+const priceInput = document.getElementById("id_price");
+const durationInput = document.getElementById("id_duration");
+
+const durationPrices = {
+    "7": 200000,
+    "30": 600000,
+    "90": 1500000
+};
+
+function formatPrice(value) {
+    value = value
+        .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+        .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
+        .replace(/[^0-9]/g, "");
+
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+if (priceInput && durationInput) {
+
+    durationInput.addEventListener("change", function () {
+        const price = durationPrices[this.value];
+
+        if (price) {
+            priceInput.value = formatPrice(String(price));
+        }
+    });
+
+    priceInput.addEventListener("input", function () {
+        this.value = formatPrice(this.value);
+    });
+
+    priceInput.form.addEventListener("submit", function () {
+        priceInput.value = priceInput.value.replace(/,/g, "");
+    });
+}
+</script>
 
 </body>
 </html>

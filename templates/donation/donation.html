@@ -1,27 +1,121 @@
 <!DOCTYPE html>
 {% load humanize %}
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صندوق همدلی</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: sans-serif;
-            text-align: center;
-            margin-top: 50px;
+            margin: 0;
+            padding: 30px 15px;
+            font-family: Tahoma, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
             direction: rtl;
         }
 
         .box {
-            background: #f2f2f2;
-            padding: 30px;
-            border-radius: 15px;
-            display: inline-block;
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px 25px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 55px;
+            margin-bottom: 5px;
         }
 
         h1 {
-            color: green;
+            color: #198754;
+            margin: 5px 0 20px;
+            font-size: 30px;
+        }
+
+        .balance {
+            background: #e8f5e9;
+            border: 2px solid #b7dfbd;
+            border-radius: 18px;
+            padding: 18px 10px;
+            margin: 20px 0;
+        }
+
+        .balance-title {
+            display: block;
+            color: #555;
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .amount {
+            display: block;
+            color: #198754;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .description {
+            color: #555;
+            font-size: 16px;
+            line-height: 2;
+            margin: 20px 5px;
+        }
+
+        h3 {
+            color: #198754;
+            font-size: 22px;
+            margin-top: 25px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        form p {
+            margin: 15px 0;
+            text-align: right;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            background: #198754;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #146c43;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #198754;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -30,31 +124,41 @@
 
 <div class="box">
 
-    <h1>❤️ صندوق همدلی</h1>
+    <div class="icon">❤️</div>
 
-    <h2>
-        موجودی صندوق:
-        {{ total|intcomma }}
-        تومان
-    </h2>
+    <h1>صندوق همدلی</h1>
 
-    <p>
-        با کمک شما می‌توانیم به افراد نیازمند کمک کنیم.
+    <div class="balance">
+        <span class="balance-title">موجودی صندوق</span>
+
+        <span class="amount">
+            {{ total|intcomma }} تومان
+        </span>
+    </div>
+
+    <p class="description">
+        با کمک شما می‌توانیم دست یاری به سوی افراد نیازمند دراز کنیم.
+        <br>
+        هر کمک، هرچقدر کوچک، ارزشمند است. 🤲
     </p>
 
     <h3>🤲 ثبت کمک</h3>
 
-<form method="post">
+    <form method="post">
 
-    {% csrf_token %}
+        {% csrf_token %}
 
-    {{ form.as_p }}
+        {{ form.as_p }}
 
-    <button type="submit">
-        کمک می‌کنم
-    </button>
+        <button type="submit">
+            ❤️ کمک می‌کنم
+        </button>
 
-</form>
+    </form>
+
+    <a href="/" class="back">
+        ← بازگشت به صفحه اصلی
+    </a>
 
 </div>
 

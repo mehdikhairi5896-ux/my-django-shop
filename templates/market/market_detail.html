@@ -6,38 +6,109 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ item.title }}</title>
+
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .detail-box {
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .image {
+            width: 100%;
+            max-width: 400px;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 20px auto;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        .price {
+            color: #198754;
+            font-weight: bold;
+            font-size: 21px;
+        }
+
+        .buy-button {
+            display: block;
+            margin: 25px auto 15px;
+            width: 90%;
+            max-width: 350px;
+            padding: 13px;
+            background: #198754;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 17px;
+        }
+
+        .back {
+            display: block;
+            margin-top: 15px;
+            color: #0d6efd;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>{{ item.title }}</h1>
+<div class="detail-box">
 
-{% if item.image %}
-    <img src="{{ item.image.url }}" width="300">
-{% endif %}
+    <h1>{{ item.title }}</h1>
 
-<p>{{ item.description }}</p>
+    {% if item.image %}
+        <img class="image" src="{{ item.image.url }}" alt="{{ item.title }}">
+    {% endif %}
 
-<p>
-    💰 قیمت:
-    {{ item.price|floatformat:0|intcomma }} تومان
-</p>
+    <p>
+        {{ item.description }}
+    </p>
 
-<p>
-    📍 شهر: {{ item.city }}
-</p>
+    <p class="price">
+        💰 قیمت:
+        {{ item.price|intcomma }} تومان
+    </p>
 
-<p>
-    👤 فروشنده: {{ item.owner.username }}
-</p>
+    <p>
+        📍 شهر: {{ item.city }}
+    </p>
 
-<a href="{% url 'market_buy' item.id %}">
-    🛒 خرید این کالا
-</a>
+    <p>
+        👤 فروشنده: {{ item.owner.username }}
+    </p>
 
-<a href="{% url 'market_list' %}">
-    ⬅ بازگشت به بازار
-</a>
+    <a class="buy-button" href="{% url 'market_buy' item.id %}">
+        🛒 خرید این کالا
+    </a>
+
+    <a class="back" href="{% url 'market_list' %}">
+        ⬅️ بازگشت به بازار
+    </a>
+
+</div>
 
 </body>
 </html>

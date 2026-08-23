@@ -61,13 +61,7 @@ class Advertisement(models.Model):
                 super().save(update_fields=["image"])
 
     def get_price(self):
-        if self.duration == 7:
-            return 200000
-        elif self.duration == 30:
-            return 600000
-        elif self.duration == 90:
-            return 1500000
-        return 0
+        return self.price
 
     def __str__(self):
         return self.title

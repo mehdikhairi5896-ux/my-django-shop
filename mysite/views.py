@@ -3,6 +3,7 @@ from shop.models import Advertisement
 from donation.models import Donation
 from django.db.models import Sum
 
+
 def home(request):
     ad = Advertisement.objects.first()
 
@@ -10,9 +11,12 @@ def home(request):
         total=Sum("amount")
     )["total"] or 0
 
-    donations = Donation.objects.all().order_by("-id")[:10]
+    if request.user.is_staff:
+        donations = Donation.objects.all().order_by("-id")[:10]
+    else:
+        donations = []
 
     return render(request, "index.html", {
-    "donation_total": donation_total,
-    "donations": donations,
-})
+        "donation_total": donation_total,
+        "donations": donations,
+    })

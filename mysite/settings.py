@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = '1)=4c!-z2%w+^^__3*xgnky7i9j=r_#*x#pl0*sgz=5k9aa2ot'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['my-django-shop-2.onrender.com', '127.0.0.1', 'localhost']
 
@@ -140,7 +140,7 @@ LOGOUT_REDIRECT_URL = '/'
 ZARINPAL_MERCHANT_ID = "SANDBOX"
 ZARINPAL_SANDBOX = True
 
-SECURE_SSL_REDIRECT = os.environ.get("DJANGO_PRODUCTION", "False") == "True"
-SECURE_HSTS_SECONDS = 31536000
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SECURE_HSTS_SECONDS = 0
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False

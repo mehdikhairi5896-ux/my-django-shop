@@ -1,10 +1,12 @@
 from django import forms
 from .models import Donation
 
+
 class DonationForm(forms.ModelForm):
 
     class Meta:
         model = Donation
+
         fields = [
             "donor_name",
             "amount",
@@ -18,15 +20,26 @@ class DonationForm(forms.ModelForm):
         }
 
         widgets = {
-            "donor_name": forms.TextInput(attrs={
-                "class": "form-control"
-            }),
+            "donor_name": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                }
+            ),
 
-            "amount": forms.NumberInput(attrs={
-                "class": "form-control"
-            }),
+            "amount": forms.TextInput(
+    attrs={
+        "class": "form-control",
+        "inputmode": "numeric",
+        "autocomplete": "off",
+        "dir": "ltr",
+        "style": "text-align: left;",
+    }
+),
 
-            "description": forms.Textarea(attrs={
-                "class": "form-control"
-            }),
+            "description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                }
+            ),
         }
+

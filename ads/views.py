@@ -52,10 +52,9 @@ def ad_create(request):
         if form.is_valid():
             ad = form.save(commit=False)
             ad.owner = request.user
-            ad.price = ad.get_price()
             ad.save()
 
-            return redirect("ad_list")
+            return redirect("ad_detail", ad_id=ad.id)
 
     else:
         form = AdvertisementForm()
@@ -130,7 +129,7 @@ def pay_ad(request, ad_id):
 
     if request.method == "POST":
         callback_url = request.build_absolute_uri(
-            "/ads/verify-payment/"
+            "/ads/verify/"
         )
 
         result = create_payment(
@@ -166,8 +165,77 @@ def pay_ad(request, ad_id):
     )
 
 @login_required
-def verify_payment(request):
+def test_payment(request, ad_id):
+    ad = get_object_or_404(
+        Advertisement,
+        id=ad_id,
+        owner=request.user
+    )
+
+    if request.method == "POST":
+        payment = Payment.objects.create(
+            advertisement=ad,
+            user=request.user,
+            amount=ad.get_price(),
+            status="success",
+            authority="TEST",
+            ref_id="TEST",
+            paid_at=timezone.now(),
+        )
+
+        ad.paid = True
+        ad.approved = True
+        ad.save(update_fields=["paid", "approved"])
+
+        return render(
+            request,
+            "ads/success.html",
+            {
+                "success": True,
+                "ad": ad,
+                "test_payment": True,
+            }
+        )
+
     return render(
         request,
-        "ads/success.html"
+        "ads/pay.html",
+        {
+            "ad": ad,
+            "test_payment": True,
+        }
+    )
+
+@login_required
+def verify_payment(request):
+    authority = request.GET.get("Authority")
+    status = request.GET.get("Status")
+
+    if status != "OK" or not authority:
+        return render(
+            request,
+            "ads/success.html",
+            {"success": False}
+        )
+
+    payment = get_object_or_404(
+        Payment,
+        authority=authority,
+        user=request.user
+    )
+
+    payment.status = "success"
+    payment.ref_id = request.GET.get("RefID")
+    payment.paid_at = timezone.now()
+    payment.save()
+
+    ad = payment.advertisement
+    ad.paid = True
+    ad.approved = True
+    ad.save(update_fields=["paid", "approved"])
+
+    return render(
+        request,
+        "ads/success.html",
+        {"success": True, "ad": ad}
     )

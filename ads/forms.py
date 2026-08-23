@@ -11,4 +11,14 @@ class AdvertisementForm(forms.ModelForm):
             "city",
             "image",
             "duration",
+            "price",
         ]
+
+        widgets = {
+            "price": forms.TextInput(
+                attrs={
+                    "inputmode": "numeric",
+                    "placeholder": "مثلاً 12,000,000",
+                }
+            ),
+        }

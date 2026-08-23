@@ -2,13 +2,36 @@
 {% load humanize %}
 
 {% block content %}
-<h2>پرداخت تبلیغ</h2>
 
-<p><strong>عنوان:</strong> {{ ad.title }}</p>
-<p><strong>هزینه:</strong> {{ ad.get_price|intcomma }} تومان</p>
+<div style="max-width:500px; margin:40px auto; padding:30px; text-align:center; border:1px solid #ddd; border-radius:15px;">
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">پرداخت</button>
-</form>
+    <h2>💳 پرداخت تبلیغ</h2>
+
+    <p>
+        <strong>عنوان:</strong>
+        {{ ad.title }}
+    </p>
+
+    <p style="font-size:22px;">
+        <strong>مبلغ:</strong>
+        {{ ad.get_price|intcomma }} تومان
+    </p>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'test_payment' ad.id %}">
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            style="display:block; margin:25px auto 0; padding:12px 30px; font-size:18px; cursor:pointer;"
+        >
+            🧪 پرداخت آزمایشی
+        </button>
+    </form>
+
+</div>
+
 {% endblock %}

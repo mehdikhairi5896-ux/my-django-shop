@@ -3,15 +3,21 @@
 {% block title %}ورود{% endblock %}
 
 {% block content %}
-<h2>ورود</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+<div class="login-box">
 
-    <button type="submit">
-        ورود
-    </button>
-</form>
+    <h2>ورود</h2>
+
+    <form method="post" class="login-form">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            ورود
+        </button>
+    </form>
+
+</div>
 
 {% endblock %}

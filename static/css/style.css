@@ -229,3 +229,53 @@ nav a {
     text-align: left;
     font-weight: bold;
 }
+
+/* صفحه ورود */
+
+.login-box {
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #ddd;
+}
+
+.login-form p {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.login-form button {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+
+    .login-box {
+        width: 92%;
+        margin: 25px auto;
+        padding: 20px;
+    }
+
+    .login-form input {
+        width: 100%;
+    }
+
+}
