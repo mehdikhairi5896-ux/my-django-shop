@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'shop',
     'cart',
     'accounts',
-    'orders',
     'ads',
     'donation',
     'market',
