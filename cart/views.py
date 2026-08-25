@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from shop.models import Product
 from .models import CartItem, Order, OrderItem
 from .forms import OrderForm
-
+from django.db import transaction
 
 @login_required
 def add_to_cart(request, product_id):
@@ -21,7 +21,6 @@ def add_to_cart(request, product_id):
 
     return redirect('cart_detail')
 
-
 @login_required
 def cart_detail(request):
     items = CartItem.objects.filter(user=request.user)
@@ -34,37 +33,40 @@ def cart_detail(request):
         'total': total
     })
 
-
 @login_required
 def remove_from_cart(request, item_id):
     item = get_object_or_404(CartItem, id=item_id, user=request.user)
     item.delete()
     return redirect('cart_detail')
 
-
 @login_required
 def place_order(request):
-    form = OrderForm()
     items = CartItem.objects.filter(user=request.user)
+
+    if not items.exists():
+        return redirect('cart_detail')
+
+    form = OrderForm()
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
 
         if form.is_valid():
-            order = Order.objects.create(
-                user=request.user,
-                phone=form.cleaned_data['phone'],
-                address=form.cleaned_data['address']
-            )
-
-            for item in items:
-                OrderItem.objects.create(
-                    order=order,
-                    product=item.product,
-                    quantity=item.quantity
+            with transaction.atomic():
+                order = Order.objects.create(
+                    user=request.user,
+                    phone=form.cleaned_data['phone'],
+                    address=form.cleaned_data['address']
                 )
 
-            items.delete()
+                for item in items:
+                    OrderItem.objects.create(
+                        order=order,
+                        product=item.product,
+                        quantity=item.quantity
+                    )
+
+                items.delete()
 
             return redirect('my_orders')
 
