@@ -84,6 +84,24 @@
 
             <p>💰 مبلغ کل: {{ order.total_price|intcomma }} تومان</p>
 
+            {% if not order.is_paid %}
+    <a href="{% url 'test_order_payment' order.id %}"
+       style="display:inline-block;
+              background:#ff9800;
+              color:white;
+              padding:10px 18px;
+              border-radius:8px;
+              text-decoration:none;
+              font-weight:bold;">
+        💳 پرداخت سفارش
+    </a>
+
+{% else %}
+    <span style="color:green;font-weight:bold;">
+        ✅ پرداخت شده
+    </span>
+{% endif %}
+
         </div>
 
     {% endfor %}

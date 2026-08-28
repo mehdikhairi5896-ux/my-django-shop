@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
 from shop.models import Product
-from .models import CartItem, Order, OrderItem
+from shop.models import Product
+from .models import CartItem, Order, OrderItem, OrderPayment
 from .forms import OrderForm
 from django.db import transaction
+from django.utils import timezone
+from ads.payment import create_payment, verify_payment
 
 @login_required
 def add_to_cart(request, product_id):
@@ -76,6 +78,200 @@ def place_order(request):
     })
 
 @login_required
+def pay_order(request, order_id):
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=request.user
+    )
+
+    # اگر سفارش قبلاً پرداخت موفق داشته باشد
+    if OrderPayment.objects.filter(
+        order=order,
+        status="success"
+    ).exists():
+        return render(
+            request,
+            "cart/order_success.html",
+            {
+                "success": True,
+                "order": order,
+                "already_paid": True,
+            }
+        )
+
+    if request.method == "POST":
+        callback_url = request.build_absolute_uri(
+            "/cart/payment/verify/"
+        )
+
+        result = create_payment(
+            amount=order.total_price(),
+            description=f"پرداخت سفارش {order.id}",
+            callback_url=callback_url,
+        )
+
+        if result["success"]:
+            payment = OrderPayment.objects.create(
+                order=order,
+                user=request.user,
+                amount=order.total_price(),
+                status="pending",
+                authority=result["authority"],
+            )
+
+            return redirect(result["url"])
+
+        return render(
+            request,
+            "cart/pay_order.html",
+            {
+                "order": order,
+                "error": result["message"],
+            }
+        )
+
+    return render(
+        request,
+        "cart/pay_order.html",
+        {"order": order}
+    )
+
+@login_required
+def test_order_payment(request, order_id):
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=request.user
+    )
+
+    # اگر سفارش قبلاً پرداخت موفق داشته باشد
+    if OrderPayment.objects.filter(
+        order=order,
+        status="success"
+    ).exists():
+        return render(
+            request,
+            "cart/order_success.html",
+            {
+                "success": True,
+                "order": order,
+                "test_payment": True,
+                "already_paid": True,
+            }
+        )
+
+    if request.method == "POST":
+
+        # جلوگیری از ایجاد پرداخت تستی تکراری
+        if OrderPayment.objects.filter(
+            order=order,
+            status="success"
+        ).exists():
+            return render(
+                request,
+                "cart/order_success.html",
+                {
+                    "success": True,
+                    "order": order,
+                    "test_payment": True,
+                    "already_paid": True,
+                }
+            )
+
+        OrderPayment.objects.create(
+            order=order,
+            user=request.user,
+            amount=order.total_price(),
+            status="success",
+            authority="TEST",
+            ref_id="TEST",
+            paid_at=timezone.now(),
+        )
+        order.status = "processing"
+        order.save(update_fields=["status"])
+
+        return render(
+            request,
+            "cart/order_success.html",
+            {
+                "success": True,
+                "order": order,
+                "test_payment": True,
+            }
+        )
+
+    return render(
+        request,
+        "cart/pay_order.html",
+        {
+            "order": order,
+            "test_payment": True,
+        }
+    )
+
+@login_required
+def verify_order_payment(request):
+    authority = request.GET.get("Authority")
+    status = request.GET.get("Status")
+
+    if status != "OK" or not authority:
+        return render(
+            request,
+            "cart/order_success.html",
+            {"success": False}
+        )
+
+    payment = get_object_or_404(
+        OrderPayment,
+        authority=authority,
+        user=request.user
+    )
+
+    if payment.status == "success":
+        return render(
+            request,
+            "cart/order_success.html",
+            {
+                "success": True,
+                "order": payment.order,
+            }
+        )
+
+    result = verify_payment(
+        payment.amount,
+        authority
+    )
+
+    if "data" in result and result["data"].get("code") in [100, 101]:
+        payment.status = "success"
+        payment.ref_id = str(
+            result["data"].get("ref_id", "")
+        )
+        payment.paid_at = timezone.now()
+        payment.save()
+        payment.order.status = "processing"
+        payment.order.save(update_fields=["status"])
+
+        return render(
+            request,
+            "cart/order_success.html",
+            {
+                "success": True,
+                "order": payment.order,
+            }
+        )
+
+    payment.status = "failed"
+    payment.save(update_fields=["status"])
+
+    return render(
+        request,
+        "cart/order_success.html",
+        {"success": False}
+    )
+
+@login_required
 def increase_quantity(request, item_id):
     item = get_object_or_404(CartItem, id=item_id, user=request.user)
     item.quantity += 1
@@ -99,6 +295,9 @@ def my_orders(request):
     orders = Order.objects.filter(
         user=request.user
     ).order_by('-id')
+
+    for order in orders:
+        order.is_paid = order.payments.filter(status="success").exists()
 
     return render(request, 'cart/my_orders.html', {
         'orders': orders

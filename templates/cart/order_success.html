@@ -1,20 +1,79 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>سفارش موفق</title>
+    <title>وضعیت سفارش</title>
+
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            direction: rtl;
+            text-align: center;
+            background: #f5f7fa;
+            margin: 0;
+            padding-top: 80px;
+        }
+
+        .success-box {
+            width: 90%;
+            max-width: 450px;
+            margin: auto;
+            background: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        h1 {
+            color: #2e7d32;
+        }
+
+        a {
+            display: inline-block;
+            margin: 8px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>🎉 سفارش شما ثبت شد!</h1>
+    <div class="success-box">
 
-<p>از خرید شما متشکریم 🙌</p>
+        {% if already_paid %}
 
-<p>شماره سفارش شما: {{ order.id }}</p>
+            <h1>✅ این سفارش قبلاً پرداخت شده است</h1>
 
-<a href="/shop/">رفتن به فروشگاه</a>
-<br><br>
-<a href="/cart/my-orders/">مشاهده سفارش‌های من</a>
+            <p>پرداخت این سفارش با موفقیت ثبت شده است.</p>
+
+        {% elif success %}
+
+            <h1>🎉 پرداخت با موفقیت انجام شد!</h1>
+
+            <p>از خرید شما متشکریم 🙌</p>
+
+        {% else %}
+
+            <h1>❌ پرداخت ناموفق بود</h1>
+
+            <p>متأسفانه پرداخت سفارش انجام نشد.</p>
+
+        {% endif %}
+
+        <p>
+            شماره سفارش شما:
+            {{ order.id }}
+        </p>
+
+        <a href="/shop/">رفتن به فروشگاه</a>
+
+        <a href="/cart/my-orders/">مشاهده سفارش‌های من</a>
+
+    </div>
 
 </body>
 </html>

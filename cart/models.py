@@ -2,14 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from shop.models import Product
 
-
 STATUS_CHOICES = [
     ('pending', 'در انتظار بررسی'),
     ('processing', 'در حال آماده‌سازی'),
     ('shipped', 'ارسال شده'),
     ('delivered', 'تحویل شده'),
 ]
-
 
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -21,7 +19,6 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} × {self.quantity}"
-
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -48,7 +45,6 @@ class Order(models.Model):
     def __str__(self):
         return f"سفارش {self.id}"
 
-
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -59,3 +55,53 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return self.product.name
+
+class OrderPayment(models.Model):
+    STATUS_CHOICES = [
+        ("pending", "در انتظار پرداخت"),
+        ("success", "پرداخت موفق"),
+        ("failed", "پرداخت ناموفق"),
+    ]
+
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name="payments"
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    amount = models.PositiveIntegerField()
+
+    authority = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    ref_id = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pending"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    paid_at = models.DateTimeField(
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return f"سفارش {self.order.id} - {self.amount}"
