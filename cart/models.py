@@ -4,7 +4,7 @@ from shop.models import Product
 
 STATUS_CHOICES = [
     ('pending', 'در انتظار بررسی'),
-    ('processing', 'در حال آماده‌سازی'),
+    ('processing', 'در حال پردازش'),
     ('shipped', 'ارسال شده'),
     ('delivered', 'تحویل شده'),
 ]
