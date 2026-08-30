@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,9 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = '1)=4c!-z2%w+^^__3*xgnky7i9j=r_#*x#pl0*sgz=5k9aa2ot'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-only-key-change-me')
 
-DEBUG = True
+DEBUG = False
+IS_RENDER = os.environ.get("RENDER") == "true"
 
 ALLOWED_HOSTS = ['my-django-shop-2.onrender.com', '127.0.0.1', 'localhost']
 
@@ -139,7 +141,9 @@ LOGOUT_REDIRECT_URL = '/'
 ZARINPAL_MERCHANT_ID = "SANDBOX"
 ZARINPAL_SANDBOX = True
 
-SECURE_SSL_REDIRECT = False
-SECURE_HSTS_SECONDS = 0
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = IS_RENDER
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = IS_RENDER
+SECURE_HSTS_PRELOAD = IS_RENDER
+SESSION_COOKIE_SECURE = IS_RENDER
+CSRF_COOKIE_SECURE = IS_RENDER
