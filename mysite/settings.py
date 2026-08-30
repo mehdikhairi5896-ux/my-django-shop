@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-only-key-change-me')
 
-DEBUG = False
+DEBUG = True
 IS_RENDER = os.environ.get("RENDER") == "true"
 
 ALLOWED_HOSTS = ['my-django-shop-2.onrender.com', '127.0.0.1', 'localhost']
