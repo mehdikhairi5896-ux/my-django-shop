@@ -199,35 +199,20 @@ nav a {
 }
 
 .donation-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: block;
     direction: rtl;
     background: #f8f9fa;
-    padding: 12px 15px;
-    margin: 8px 0;
+    padding: 15px;
+    margin: 10px 0;
     border-radius: 8px;
     font-size: 18px;
+    line-height: 2;
 }
 
-.donation-item span {
-    flex: 1;
-}
-
-.donation-item .amount {
-    text-align: left;
-    font-weight: bold;
-}
-
-.donation-item span:first-child {
-    flex: 1;
+.donation-item > div {
+    display: block;
     text-align: right;
-}
-
-.donation-item .amount {
-    width: 150px;
-    text-align: left;
-    font-weight: bold;
+    white-space: normal;
 }
 
 /* صفحه ورود */
@@ -279,3 +264,4 @@ nav a {
     }
 
 }
+

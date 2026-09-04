@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load donation_filters %}
+{% load humanize %}
 
 {% block content %}
 
@@ -30,6 +32,46 @@
 
 </div>
 
+
+<div class="donation-list">
+
+    <h3>کمک‌های ثبت‌شده</h3>
+
+    {% for donation in donations %}
+
+        <div class="donation-item">
+
+            <div>
+                {{ donation.donor_name|default:"ناشناس" }}
+            </div>
+
+            <div>
+                مبلغ: {{ donation.amount|intcomma }} تومان
+            </div>
+
+            <div>
+                تاریخ: {{ donation.created_at|jalali_date }}
+            </div>
+
+            {% if donation.description %}
+                <div>
+                    توضیحات: {{ donation.description }}
+                </div>
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+    <p style="text-align: center; width: 100%; margin: 20px auto;">
+        هنوز کمکی ثبت نشده است.
+    </p>
+
+{% endfor %}
+
+</div>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -39,7 +81,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function formatAmount(value) {
         value = value.replace(/[^\d]/g, "");
+
         if (!value) return "";
+
         return Number(value).toLocaleString("en-US");
     }
 
@@ -57,4 +101,3 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 {% endblock %}
-

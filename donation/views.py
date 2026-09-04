@@ -28,6 +28,7 @@ def donation_home(request):
         total=Sum("amount")
     )["total"] or 0
 
+    donations = Donation.objects.order_by("-created_at")
 
     return render(
     request,
@@ -35,7 +36,8 @@ def donation_home(request):
     {
         "total": intcomma(total),
         "form": form,
-    }
+        "donations": donations, 
+   }
 
     )
 
