@@ -4,6 +4,56 @@
 {% block title %}سایت شخصی مهدی{% endblock %}
 {% block content %}
 
+<div class="datetime-box">
+    <div id="clock"></div>
+    <div id="date"></div>
+</div>
+
+<style>
+.datetime-box {
+    text-align: center;
+    margin: 25px auto 30px;
+}
+
+#clock {
+    font-size: 48px;
+    font-weight: bold;
+    direction: ltr;
+    line-height: 1.2;
+}
+
+#date {
+    font-size: 24px;
+    margin-top: 8px;
+    font-weight: bold;
+}
+</style>
+
+<script>
+function updateClock() {
+    const now = new Date();
+
+    const time = now.toLocaleTimeString('fa-IR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
+    const date = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }).format(now);
+
+    document.getElementById('clock').textContent = time;
+    document.getElementById('date').textContent = date;
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+
 <style>
 
 /* =========================
