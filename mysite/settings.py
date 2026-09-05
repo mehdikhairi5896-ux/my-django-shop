@@ -24,10 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-only-key-change-me')
 
-DEBUG = True
 IS_RENDER = os.environ.get("RENDER") == "true"
+DEBUG = not IS_RENDER
 
 ALLOWED_HOSTS = ['my-django-shop-2.onrender.com', '127.0.0.1', 'localhost']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://my-django-shop-2.onrender.com',
+]
 
 # Application definition
 'blog',
