@@ -265,3 +265,38 @@ nav a {
 
 }
 
+.top-message {
+    width: 100%;
+    text-align: center !important;
+    padding: 20px 15px;
+    margin: 0 auto 15px auto !important;
+    background: #0d6efd;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+    border-bottom: 2px solid #e9ecef;
+}
+
+.top-message div {
+    display: block !important;
+    width: 100%;
+    text-align: center !important;
+    font-size: 25px;
+    font-weight: bold;
+    line-height: 1.8;
+    color: white;
+}
+
+.top-message span {
+    display: block !important;
+    width: 100%;
+    text-align: center !important;
+    direction: ltr;
+    font-size: 25px;
+    font-style: italic;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.top-message div:last-of-type {
+    margin-top: 5px;
+}
