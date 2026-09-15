@@ -18,4 +18,14 @@ u = User.objects.create_superuser(
 )
 
 print('NEW ADMIN CREATED:', u.username)
+
+User.objects.filter(username='Mehdi Khairi Bairagh').delete()
+
+User.objects.create_superuser(
+    username='Mehdi Khairi Bairagh',
+    email='mehdikhairibairagh@example.com',
+    password=os.environ.get('RENDER_ADMIN_PASSWORD')
+)
+
+print('MEHDI KHAIRI BAIRAGH ADMIN CREATED')
 "
