@@ -23,6 +23,12 @@
     <a href="/shop/" class="shop-nav-link">🛒 فروشگاه</a>
     <a href="/cart/">🛍 سبد خرید</a>
     <a href="/accounts/profile/?test=123">👤 پروفایل</a>
+    {% if user.is_authenticated %}
+<form method="post" action="{% url 'logout' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">🚪 خروج</button>
+</form>
+{% endif %}
 </nav>
 
 {% block content %}
